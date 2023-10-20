@@ -9,7 +9,7 @@ import Container from "@/components/ui/container/Container";
 export default async function page() {
   const session = await getServerSession(authOptions);
   if (session) {
-    redirect("/cashier");
+    redirect("/dashboard");
   }
 
   return (
