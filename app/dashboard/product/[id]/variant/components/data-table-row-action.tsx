@@ -8,15 +8,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
-import Product from "@/type/product";
-import DialogUpdateProduct from "./dialog-update-product";
-import Link from "next/link";
+import ProductVariant from "@/type/product-variant";
+import DialogUpdateProductVariant from "./dialog-update-product-variant";
 
 type Props = {
-  product: Product;
+  productVariant: ProductVariant;
 };
 
-export default function DataTableRowAction({ product }: Props) {
+export default function DataTableRowAction({ productVariant }: Props) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
@@ -42,19 +41,14 @@ export default function DataTableRowAction({ product }: Props) {
             >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/dashboard/product/${product.id}/variant`}>
-                Lihat varian
-              </Link>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <DialogUpdateProduct
+      <DialogUpdateProductVariant
         open={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
-        product={product}
+        productVariant={productVariant}
       />
     </>
   );

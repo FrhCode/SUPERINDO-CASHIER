@@ -25,7 +25,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import updateProductCategory from "@/service/product_category/update-product-category";
 import Product from "@/type/product";
 import UpdateProductSchema from "./schema/update-product-schema";
 import updateProduct from "@/service/product/update-product";

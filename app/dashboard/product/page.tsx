@@ -15,6 +15,7 @@ import { paginateProduct } from "@/service/product/paginate-product";
 import ToogleProductActive from "./components/toogle-product-active";
 import DataTableRowAction from "./components/data-table-row-action";
 import DataTablePagination from "./components/data-table-pagination";
+import { paginateProductCategory } from "@/service/product_category/paginate-product-category";
 
 type Props = {
   searchParams: Partial<PaginateProduct>;
@@ -38,11 +39,19 @@ export default async function Page({
     sortDirection: sortDirection ?? "DESC",
   });
 
+  const { content: productCategory } = await paginateProductCategory({
+    page: "0",
+    query: "",
+    size: "100",
+    token: session.jwtToken,
+    sortBy: "",
+    sortDirection: "ASC",
+  });
+
   return (
     <div className="space-y-4">
       <DataTableToolbar />
       <Table>
-        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Status</TableHead>

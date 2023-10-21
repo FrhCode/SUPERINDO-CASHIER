@@ -8,21 +8,24 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
-import Product from "@/type/product";
-import UpdateProductSchema from "./schema/update-product-schema";
-import updateProduct from "@/service/product/update-product";
+import ProductVariant from "@/type/product-variant";
+import updateProductVariant from "@/service/product_variant/update-product-variant";
+import UpdateProductVariantSchema from "./schema/update-product-variant-schema";
 
 type Props = {
-  product: Product;
+  productVariant: ProductVariant;
 };
 
-export default function ToogleProductActive({ product }: Props) {
-  const form = useForm<z.infer<typeof UpdateProductSchema>>({
-    resolver: zodResolver(UpdateProductSchema),
+export default function ToogleProductVariantActive({ productVariant }: Props) {
+  const form = useForm<z.infer<typeof UpdateProductVariantSchema>>({
+    resolver: zodResolver(UpdateProductVariantSchema),
     defaultValues: {
-      active: product.active,
-      name: product.name,
-      id: `${product.id}`,
+      active: productVariant.active,
+      name: productVariant.name,
+      id: `${productVariant.id}`,
+      price: productVariant.price,
+      qty: productVariant.qty,
+      thumbnail: productVariant.thumbnail,
     },
   });
 
@@ -30,8 +33,8 @@ export default function ToogleProductActive({ product }: Props) {
 
   const router = useRouter();
 
-  async function onSubmit(data: z.infer<typeof UpdateProductSchema>) {
-    await updateProduct({
+  async function onSubmit(data: z.infer<typeof UpdateProductVariantSchema>) {
+    await updateProductVariant({
       data,
       token: session.data!.jwtToken,
     });
@@ -42,8 +45,6 @@ export default function ToogleProductActive({ product }: Props) {
       title: "Data Berhasil Di-update",
       description: "Data telah berhasil di-update ke dalam aplikasi.",
     });
-
-    // form.reset();
   }
 
   return (
@@ -56,7 +57,7 @@ export default function ToogleProductActive({ product }: Props) {
             <FormItem>
               <FormControl>
                 <Switch
-                  checked={product.active}
+                  checked={productVariant.active}
                   onCheckedChange={(e) => {
                     field.onChange(e);
                     form.handleSubmit(onSubmit)();
