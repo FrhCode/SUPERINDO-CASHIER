@@ -1,7 +1,7 @@
 type Paginate = {
   query: string;
-  page: number;
-  size: number;
+  page: string;
+  size: string;
   sortBy: string;
   sortDirection: "ASC" | "DESC";
 };

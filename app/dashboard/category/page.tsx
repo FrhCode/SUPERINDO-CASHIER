@@ -12,6 +12,13 @@ import {
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { paginateProductCategory } from "@/service/product_category/paginate-product-category";
+import DataTablePagination from "./components/data-table-pagination";
+import { Switch } from "@/components/ui/switch";
+import PaginateProductCategoryRequest from "@/type/paginate-product-category";
+import DataTableToolbar from "./components/data-table-toolbar";
+import { Button } from "@/components/ui/button";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import ToogleProductCategoryActive from "./components/toogle-product-category-active";
 
 const invoices = [
   {
@@ -58,49 +65,65 @@ const invoices = [
   },
 ];
 
-export default async function page() {
+type Props = {
+  searchParams: Partial<PaginateProductCategoryRequest>;
+};
+
+export default async function page({
+  searchParams: { size, page, query, sortBy, sortDirection },
+}: Props) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     throw new Error();
   }
-  // await paginateProductCategory({
-  //   token: session.jwtToken,
-  //   page: 1,
-  //   query: "",
-  //   size: 1,
-  // });
+
+  const data = await paginateProductCategory({
+    token: session.jwtToken,
+    page: page ?? "0",
+    query: query ?? "",
+    size: size ?? "10",
+    sortBy: sortBy ?? "",
+    sortDirection: sortDirection ?? "ASC",
+  });
+
   return (
     <div className="space-y-4">
-      <Input
-        type="text"
-        placeholder="Filter categori..."
-        className="h-8 w-[150px] lg:w-[250px]"
-      />
-
+      <DataTableToolbar />
       <Table>
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Status</TableHead>
             <TableHead>Nama Categori</TableHead>
-            <TableHead>Method</TableHead>
+            <TableHead>Penanggung Jawab</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">
-                {invoice.totalAmount}
+          {data.content.map((productCategory) => (
+            <TableRow key={productCategory.id}>
+              <TableCell className="font-medium">
+                <ToogleProductCategoryActive
+                  productCategory={productCategory}
+                />
+              </TableCell>
+              <TableCell>{productCategory.name}</TableCell>
+              <TableCell>{productCategory.updated_user}</TableCell>
+              <TableCell className="flex justify-end">
+                <Button
+                  variant="ghost"
+                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <DataTablePagination page={data} />
     </div>
   );
 }

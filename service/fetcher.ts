@@ -10,10 +10,9 @@ export async function fetcher<T>(
         cache: "no-store",
       } as RequestInit);
 
-  const res: Response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + url,
-    fetchOption,
-  );
+  const URL = process.env.NEXT_PUBLIC_API_URL + url;
+
+  const res: Response = await fetch(URL, fetchOption);
 
   if (!res.ok) {
     throw new InvalidSessionException();

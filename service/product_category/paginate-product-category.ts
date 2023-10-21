@@ -8,8 +8,8 @@ type Props = { token: string } & PaginateProductCategoryRequest;
 export async function paginateProductCategory({
   token,
   size,
-  sortBy = "id",
-  sortDirection = "DESC",
+  sortBy,
+  sortDirection,
   page,
   query,
 }: Props) {

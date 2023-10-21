@@ -14,12 +14,30 @@ export default async function Page() {
   return (
     <Tabs defaultValue="ringkasan" className="space-y-4">
       <TabsList>
-        <TabsTrigger value="ringkasan">Ringkasan</TabsTrigger>
-        <TabsTrigger value="analytics">Analisis</TabsTrigger>
-        <TabsTrigger value="reports" disabled>
+        <TabsTrigger
+          className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+          value="ringkasan"
+        >
+          Ringkasan
+        </TabsTrigger>
+        <TabsTrigger
+          className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+          value="analytics"
+        >
+          Analisis
+        </TabsTrigger>
+        <TabsTrigger
+          className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+          value="reports"
+          disabled
+        >
           Laporan
         </TabsTrigger>
-        <TabsTrigger value="notifications" disabled>
+        <TabsTrigger
+          className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+          value="notifications"
+          disabled
+        >
           Notifikasi
         </TabsTrigger>
       </TabsList>
