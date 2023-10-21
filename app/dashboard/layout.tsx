@@ -57,7 +57,7 @@ export default async function DashBoardLayout({
     {
       text: "Product",
       icon: <BsBag size="20" />,
-      url: "/",
+      url: "/dashboard/product",
       separator: false,
     },
   ];

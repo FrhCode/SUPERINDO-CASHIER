@@ -65,7 +65,7 @@ export default function ToogleProductCategoryActive({
             <FormItem>
               <FormControl>
                 <Switch
-                  checked={productCategory.active}
+                  checked={field.value}
                   onCheckedChange={(e) => {
                     field.onChange(e);
                     form.handleSubmit(onSubmit)();

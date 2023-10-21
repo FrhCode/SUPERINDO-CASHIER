@@ -168,7 +168,7 @@ export default async function Page() {
               alt="lele icon"
             />
           </div>
-          <p className="text-center">Masih dalam tahap pengembangan</p>
+          <p className="text-center">Sedang dalam tahap pengembangan</p>
         </div>
       </TabsContent>
     </Tabs>
