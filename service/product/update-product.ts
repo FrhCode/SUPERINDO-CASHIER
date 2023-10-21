@@ -1,18 +1,18 @@
-import UpdateProductCategorySchema from "@/app/dashboard/category/components/schema/update-product-category-schema";
+import UpdateProductSchema from "@/app/dashboard/category/components/schema/update-product-category-schema";
+
 import { z } from "zod";
 
 interface Props {
-  data: z.infer<typeof UpdateProductCategorySchema>;
+  data: z.infer<typeof UpdateProductSchema>;
   token: string;
 }
-export default async function updateProductCategory({ token, data }: Props) {
-  const url =
-    process.env.NEXT_PUBLIC_API_URL + `/api/v1/product_categories/${data.id}`;
+export default async function updateProduct({ token, data }: Props) {
+  const url = process.env.NEXT_PUBLIC_API_URL + `/api/v1/products/${data.id}`;
 
   const res: Response = await fetch(url, {
     method: "PUT",
     body: JSON.stringify({ active: data.active, name: data.name } as Omit<
-      z.infer<typeof UpdateProductCategorySchema>,
+      z.infer<typeof UpdateProductSchema>,
       "id"
     >),
     headers: {

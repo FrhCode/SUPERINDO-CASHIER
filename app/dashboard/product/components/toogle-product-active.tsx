@@ -1,30 +1,29 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
-import ProductCategory from "@/type/product-category";
 import React from "react";
 import { useForm } from "react-hook-form";
+import editProductCategory from "../../category/components/schema/update-product-category-schema";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
-import updateProductCategory from "@/service/product_category/update-product-category";
-import UpdateProductCategorySchema from "./schema/update-product-category-schema";
+import Product from "@/type/product";
+import UpdateProductSchema from "./schema/update-product-schema";
+import updateProduct from "@/service/product/update-product";
 
 type Props = {
-  productCategory: ProductCategory;
+  product: Product;
 };
 
-export default function ToogleProductCategoryActive({
-  productCategory,
-}: Props) {
-  const form = useForm<z.infer<typeof UpdateProductCategorySchema>>({
-    resolver: zodResolver(UpdateProductCategorySchema),
+export default function ToogleProductActive({ product }: Props) {
+  const form = useForm<z.infer<typeof UpdateProductSchema>>({
+    resolver: zodResolver(UpdateProductSchema),
     defaultValues: {
-      active: productCategory.active,
-      name: productCategory.name,
-      id: `${productCategory.id}`,
+      active: product.active,
+      name: product.name,
+      id: `${product.id}`,
     },
   });
 
@@ -32,8 +31,8 @@ export default function ToogleProductCategoryActive({
 
   const router = useRouter();
 
-  async function onSubmit(data: z.infer<typeof UpdateProductCategorySchema>) {
-    await updateProductCategory({
+  async function onSubmit(data: z.infer<typeof editProductCategory>) {
+    await updateProduct({
       data,
       token: session.data!.jwtToken,
     });
@@ -58,7 +57,7 @@ export default function ToogleProductCategoryActive({
             <FormItem>
               <FormControl>
                 <Switch
-                  checked={productCategory.active}
+                  checked={product.active}
                   onCheckedChange={(e) => {
                     field.onChange(e);
                     form.handleSubmit(onSubmit)();

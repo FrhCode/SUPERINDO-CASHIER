@@ -4,7 +4,7 @@ import PaginateProductCategoryRequest from "@/type/paginate-product-category";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import DialogCreateProductCategory from "./dialog-create-product-category";
+import DialogCreateProductCategory from "../../category/components/dialog-create-product-category";
 
 export default function DataTableToolbar() {
   const searchParams = useSearchParams();

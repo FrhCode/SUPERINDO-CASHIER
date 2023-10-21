@@ -1,4 +1,4 @@
-import CreateProductCategorySchema from "@/app/dashboard/category/components/schema/create-product-category";
+import CreateProductCategorySchema from "@/app/dashboard/category/components/schema/create-product-category-schema";
 import { z } from "zod";
 
 interface Props {

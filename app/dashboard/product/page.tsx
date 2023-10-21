@@ -1,66 +1,72 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCaption,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import React from "react";
-import { BsInfoCircleFill } from "react-icons/bs";
+import DataTableToolbar from "./components/data-table-toolbar";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import PaginateProduct from "@/type/paginate-product";
+import { paginateProduct } from "@/service/product/paginate-product";
+import ToogleProductActive from "./components/toogle-product-active";
+import DataTableRowAction from "./components/data-table-row-action";
+import DataTablePagination from "./components/data-table-pagination";
 
-export default function Page() {
+type Props = {
+  searchParams: Partial<PaginateProduct>;
+};
+
+export default async function Page({
+  searchParams: { size, page, query, sortBy, sortDirection },
+}: Props) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    throw new Error();
+  }
+
+  const data = await paginateProduct({
+    token: session.jwtToken,
+    page: page ?? "0",
+    query: query ?? "",
+    size: size ?? "10",
+    sortBy: sortBy ?? "",
+    sortDirection: sortDirection ?? "DESC",
+  });
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className=" flex items-center justify-between text-2xl font-medium">
-          <span>Indomie</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <BsInfoCircleFill color="var(--blue-600)" />
-            <p className="font-semibold">info</p>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-            eum dolores, eos omnis temporibus dignissimos.
-          </p>
-        </div> */}
-
-        <Table>
-          <TableCaption>
-            {/* <DialogAddSolution
-              symptomName={diese.name}
-              dieseCode={diese.code}
-            /> */}
-            Tambah variant untuk indomie
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nama</TableHead>
-              <TableHead></TableHead>
-              {/* <TableHead className="text-right">Nilai Keyakinan</TableHead> */}
+    <div className="space-y-4">
+      <DataTableToolbar />
+      <Table>
+        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Status</TableHead>
+            <TableHead>Nama Produk</TableHead>
+            <TableHead>Penanggung Jawab</TableHead>
+            <TableHead className="text-right"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.content.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell className="font-medium">
+                <ToogleProductActive product={product} />
+              </TableCell>
+              <TableCell>{product.name}</TableCell>
+              <TableCell>{product.updated_user}</TableCell>
+              <TableCell className="flex justify-end">
+                <DataTableRowAction product={product} />
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {/* {diese.solutions.map(({ id, name, description }) => {
-              return (
-                <TableRow key={id}>
-                  <TableCell className="">{name}</TableCell>
-                  <TableCell className="text-right">
-                    <DropDownSolutionTable
-                      solution={{ id, description, name }}
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })} */}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+          ))}
+        </TableBody>
+      </Table>
+      <DataTablePagination page={data} />
+    </div>
   );
 }

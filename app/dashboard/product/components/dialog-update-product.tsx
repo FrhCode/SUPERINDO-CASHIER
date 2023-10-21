@@ -24,36 +24,37 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import ProductCategory from "@/type/product-category";
-import UpdateProductCategorySchema from "./schema/update-product-category-schema";
 import { Switch } from "@/components/ui/switch";
 import updateProductCategory from "@/service/product_category/update-product-category";
+import Product from "@/type/product";
+import UpdateProductSchema from "./schema/update-product-schema";
+import updateProduct from "@/service/product/update-product";
 
 interface Props {
-  productCategory: ProductCategory;
+  product: Product;
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DialogUpdateProductCategory({
-  productCategory,
+export default function DialogUpdateProduct({
+  product,
   open,
   setIsOpen,
 }: Props) {
   const { data: session } = useSession();
 
   const router = useRouter();
-  const form = useForm<z.infer<typeof UpdateProductCategorySchema>>({
-    resolver: zodResolver(UpdateProductCategorySchema),
+  const form = useForm<z.infer<typeof UpdateProductSchema>>({
+    resolver: zodResolver(UpdateProductSchema),
     defaultValues: {
-      active: productCategory.active,
-      id: `${productCategory.id}`,
-      name: productCategory.name,
+      active: product.active,
+      id: `${product.id}`,
+      name: product.name,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof UpdateProductCategorySchema>) {
-    await updateProductCategory({
+  async function onSubmit(data: z.infer<typeof UpdateProductSchema>) {
+    await updateProduct({
       data,
       token: session!.jwtToken,
     });
@@ -70,11 +71,11 @@ export default function DialogUpdateProductCategory({
 
   useEffect(() => {
     form.reset({
-      active: productCategory.active,
-      name: productCategory.name,
-      id: `${productCategory.id}`,
+      active: product.active,
+      name: product.name,
+      id: `${product.id}`,
     });
-  }, [form, productCategory.active, productCategory.id, productCategory.name]);
+  }, [form, product.active, product.id, product.name]);
 
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
@@ -82,9 +83,10 @@ export default function DialogUpdateProductCategory({
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Form mengupdate kategori</DialogTitle>
+              <DialogTitle>Form mengupdate product</DialogTitle>
               <DialogDescription>
-                Aksi ini akan mengubah mengubah kategori, Mohon perhatikan data yang Di-inputkan.
+                Aksi ini akan mengubah mengubah kategori, Mohon perhatikan data
+                yang Di-inputkan.
               </DialogDescription>
             </DialogHeader>
             <FormField

@@ -25,7 +25,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import CreateProductCategorySchema from "./schema/create-product-category";
+import CreateProductCategorySchema from "./schema/create-product-category-schema";
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";

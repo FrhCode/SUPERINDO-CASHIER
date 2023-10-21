@@ -10,7 +10,7 @@ import {
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsBag } from "react-icons/bs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { combineUrl } from "@/lib/combineUrl";
+import { combineUrl } from "@/lib/combine-url";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import {
@@ -49,13 +49,13 @@ export default async function DashBoardLayout({
       separator: true,
     },
     {
-      text: "Categori",
+      text: "Kategori",
       icon: <BiCategoryAlt size="20" />,
       url: "/dashboard/category",
       separator: false,
     },
     {
-      text: "Product",
+      text: "Produk",
       icon: <BsBag size="20" />,
       url: "/dashboard/product",
       separator: false,

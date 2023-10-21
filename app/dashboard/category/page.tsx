@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import React from "react";
 
 import {
@@ -13,58 +12,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { paginateProductCategory } from "@/service/product_category/paginate-product-category";
 import DataTablePagination from "./components/data-table-pagination";
-import { Switch } from "@/components/ui/switch";
 import PaginateProductCategoryRequest from "@/type/paginate-product-category";
 import DataTableToolbar from "./components/data-table-toolbar";
-import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import ToogleProductCategoryActive from "./components/toogle-product-category-active";
 import DataTableRowAction from "./components/data-table-row-action";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
 
 type Props = {
   searchParams: Partial<PaginateProductCategoryRequest>;
@@ -85,7 +36,7 @@ export default async function page({
     query: query ?? "",
     size: size ?? "10",
     sortBy: sortBy ?? "",
-    sortDirection: sortDirection ?? "ASC",
+    sortDirection: sortDirection ?? "DESC",
   });
 
   return (
@@ -96,7 +47,7 @@ export default async function page({
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Status</TableHead>
-            <TableHead>Nama Categori</TableHead>
+            <TableHead>Nama Kategori</TableHead>
             <TableHead>Penanggung Jawab</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
