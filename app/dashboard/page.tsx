@@ -9,6 +9,8 @@ import {
 import { Overview } from "./components/overview";
 import { RecentSales } from "./components/recent-sales";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Image from "next/image";
+import noData from "@/public/no-data-deposit.svg";
 
 export default async function Page() {
   return (
@@ -157,7 +159,17 @@ export default async function Page() {
         </div>
       </TabsContent>
       <TabsContent value="analytics" className="space-y-4">
-        On Progress
+        <div className="pt-20">
+          <div className="relative h-80 w-full">
+            <Image
+              src={noData}
+              fill
+              style={{ objectFit: "contain" }}
+              alt="lele icon"
+            />
+          </div>
+          <p className="text-center">Masih dalam tahap pengembangan</p>
+        </div>
       </TabsContent>
     </Tabs>
   );

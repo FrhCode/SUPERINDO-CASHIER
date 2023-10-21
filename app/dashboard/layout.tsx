@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { GiHamburgerMenu } from "react-icons/gi";
+import Sidebar from "./components/sidebar";
 
 export default async function DashBoardLayout({
   children,
@@ -87,21 +88,7 @@ export default async function DashBoardLayout({
         </div>
 
         <div className="mt-4">
-          <ul>
-            {links.map(({ icon, separator, text, url }, index) => {
-              if (separator === true) {
-                return <Separator key={index} />;
-              }
-              return (
-                <li className="px-3 text-gray-500" role="button" key={text}>
-                  <Link href={url} className="flex h-11 items-center gap-2">
-                    {icon}
-                    <p className="text-sm font-semibold">{text}</p>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <Sidebar links={links} />
         </div>
       </div>
       <div className="relative h-full max-h-screen flex-grow overflow-y-auto">

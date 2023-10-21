@@ -19,6 +19,7 @@ import DataTableToolbar from "./components/data-table-toolbar";
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import ToogleProductCategoryActive from "./components/toogle-product-category-active";
+import DataTableRowAction from "./components/data-table-row-action";
 
 const invoices = [
   {
@@ -111,13 +112,7 @@ export default async function page({
               <TableCell>{productCategory.name}</TableCell>
               <TableCell>{productCategory.updated_user}</TableCell>
               <TableCell className="flex justify-end">
-                <Button
-                  variant="ghost"
-                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                >
-                  <DotsHorizontalIcon className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
+                <DataTableRowAction productCategory={productCategory} />
               </TableCell>
             </TableRow>
           ))}

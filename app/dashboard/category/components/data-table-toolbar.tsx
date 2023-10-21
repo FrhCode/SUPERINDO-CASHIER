@@ -1,10 +1,13 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PaginateProductCategoryRequest from "@/type/paginate-product-category";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
+import DialogCreateProductCategory from "./dialog-create-product-category";
 
 export default function DataTableToolbar() {
   const searchParams = useSearchParams();
@@ -35,14 +38,18 @@ export default function DataTableToolbar() {
   }, [value]);
 
   return (
-    <Input
-      type="text"
-      placeholder="Filter categori..."
-      className="h-8 w-[150px] lg:w-[250px]"
-      onChange={(e) => {
-        setText(e.target.value);
-      }}
-      value={text}
-    />
+    <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+      <Input
+        type="text"
+        placeholder="Filter categori..."
+        className="h-8 w-full sm:w-[150px] lg:w-[250px]"
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
+        value={text}
+      />
+
+      <DialogCreateProductCategory />
+    </div>
   );
 }
