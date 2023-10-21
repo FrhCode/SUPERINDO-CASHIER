@@ -22,7 +22,7 @@ export async function paginateProductCategory({
   });
 
   return fetcher<Page<ProductCategory>>(
-    `/api/v1/product_category?${params.toString()}`,
+    `/api/v1/product_categories?${params.toString()}`,
     {
       cache: "no-cache",
       headers: {

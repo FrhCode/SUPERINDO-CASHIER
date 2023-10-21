@@ -6,7 +6,7 @@ interface Props {
   token: string;
 }
 export default async function createProductCategory({ token, data }: Props) {
-  const url = process.env.NEXT_PUBLIC_API_URL + `/api/v1/product_category`;
+  const url = process.env.NEXT_PUBLIC_API_URL + `/api/v1/product_categories`;
 
   const res: Response = await fetch(url, {
     method: "POST",

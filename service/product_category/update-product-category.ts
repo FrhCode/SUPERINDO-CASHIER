@@ -7,7 +7,7 @@ interface Props {
 }
 export default async function updateProductCategory({ token, data }: Props) {
   const url =
-    process.env.NEXT_PUBLIC_API_URL + `/api/v1/product_category/${data.id}`;
+    process.env.NEXT_PUBLIC_API_URL + `/api/v1/product_categories/${data.id}`;
 
   const res: Response = await fetch(url, {
     method: "PUT",
