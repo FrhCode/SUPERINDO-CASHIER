@@ -2,6 +2,7 @@ type Product = {
   id: number;
   plu: string;
   name: string;
+  thumbnail: string;
   active: boolean;
   created_date: string;
   updated_date: string;
