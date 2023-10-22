@@ -14,6 +14,7 @@ import PaginateTransaction from "@/type/paginate-transaction";
 import { getServerSession } from "next-auth";
 import React from "react";
 import DataTablePagination from "./components/data-table-pagination";
+import Link from "next/link";
 
 type Props = {
   searchParams: Partial<PaginateTransaction>;
@@ -60,9 +61,14 @@ export default async function Page({
               </TableCell>
               <TableCell>{transaction.created_date}</TableCell>
               <TableCell className="flex justify-end">
-                <Button variant={"outline"} size={"sm"}>
-                  Download
-                </Button>
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_API_URL}/api/v1/checkout/${transaction.id}/download`}
+                  target="_blank"
+                >
+                  <Button variant={"outline"} size={"sm"}>
+                    Download
+                  </Button>
+                </Link>
               </TableCell>
             </TableRow>
           ))}
