@@ -1,8 +1,6 @@
 import Cart from "@/type/cart";
 import { fetcher } from "../fetcher";
 
-import PaginateProduct from "@/type/paginate-product";
-import Product from "@/type/product";
 
 type Props = { token: string };
 export async function getCart({ token }: Props) {

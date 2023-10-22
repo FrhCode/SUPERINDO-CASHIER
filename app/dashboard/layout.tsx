@@ -8,7 +8,7 @@ import {
   AiOutlineShopping,
 } from "react-icons/ai";
 import { BiCategoryAlt } from "react-icons/bi";
-import { BsBag } from "react-icons/bs";
+import { BsBag, BsCash } from "react-icons/bs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { combineUrl } from "@/lib/combine-url";
 import { Separator } from "@/components/ui/separator";
@@ -60,6 +60,18 @@ export default async function DashBoardLayout({
       text: "Produk",
       icon: <BsBag size="20" />,
       url: "/dashboard/product",
+      separator: false,
+    },
+    {
+      text: "Produk",
+      icon: <BsBag size="20" />,
+      url: "/dashboard/product",
+      separator: true,
+    },
+    {
+      text: "Transaksi",
+      icon: <BsCash size="20" />,
+      url: "/dashboard/transaction",
       separator: false,
     },
   ];
