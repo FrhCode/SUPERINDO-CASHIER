@@ -25,6 +25,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Sidebar from "./components/sidebar";
 import NullSessionException from "@/exception/NullSessionException";
 import LogOut from "@/components/ui/log-out";
+import { redirect } from "next/navigation";
 
 export default async function DashBoardLayout({
   children,
@@ -35,6 +36,14 @@ export default async function DashBoardLayout({
 
   if (!session) {
     throw new NullSessionException();
+  }
+
+  const isAdministrator = session.userDetail.authorities.find(
+    (data) => data.authority == "administrator",
+  );
+
+  if (!isAdministrator) {
+    redirect("/");
   }
 
   const links = [
@@ -72,6 +81,18 @@ export default async function DashBoardLayout({
       text: "Transaksi",
       icon: <BsCash size="20" />,
       url: "/dashboard/transaction",
+      separator: false,
+    },
+    {
+      text: "Transaksi",
+      icon: <BsCash size="20" />,
+      url: "/dashboard/transaction",
+      separator: true,
+    },
+    {
+      text: "Mulai Transaksi",
+      icon: <BsCash size="20" />,
+      url: "/",
       separator: false,
     },
   ];

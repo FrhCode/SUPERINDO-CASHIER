@@ -16,6 +16,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -24,8 +29,8 @@ export default function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "farhan7534031b@gmail.com",
-      password: "indonesia123B",
+      email: "",
+      password: "",
     },
   });
 
@@ -45,7 +50,33 @@ export default function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Alamat email</FormLabel>
+              <FormLabel className="flex justify-between">
+                Alamat email
+                <Popover>
+                  <PopoverTrigger>info akun</PopoverTrigger>
+                  <PopoverContent className=" flex gap-3">
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      onClick={() => {
+                        form.setValue("email", "zydan@gmail.com");
+                        form.setValue("password", "indonesia123B");
+                      }}
+                    >
+                      akun customer
+                    </Button>
+                    <Button
+                      size={"sm"}
+                      onClick={() => {
+                        form.setValue("email", "farhan7534031b@gmail.com");
+                        form.setValue("password", "indonesia123B");
+                      }}
+                    >
+                      akun admin
+                    </Button>
+                  </PopoverContent>
+                </Popover>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="youremail@example.com" {...field} />
               </FormControl>

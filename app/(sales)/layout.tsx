@@ -103,7 +103,7 @@ export default async function RootLayout({
                   </Link>
                 ) : (
                   <LogOut>
-                    <AiOutlineLogout size={24} />
+                    <AiOutlineLogout size={24} className="cursor-pointer" />
                   </LogOut>
                 )}
 

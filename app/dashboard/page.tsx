@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Overview } from "./components/overview";
-import { RecentSales } from "./components/recent-sales";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import noData from "@/public/no-data-deposit.svg";
