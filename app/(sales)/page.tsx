@@ -55,7 +55,7 @@ export default async function Home() {
                     alt="lele icon"
                   />
                 </div>
-                <p className="mt-1 text-lg font-semibold">{product.name}</p>
+                <p className="mt-1 text-lg font-medium">{product.name}</p>
               </Link>
             );
           })}

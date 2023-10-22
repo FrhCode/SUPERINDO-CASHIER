@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Input } from "@/components/ui/input";
 import superindo from "@/public/super-indo-logo-black-and-white.png";
+import Link from "next/link";
 
 export default async function RootLayout({
   children,
@@ -21,17 +22,19 @@ export default async function RootLayout({
       <div className="bg-primary text-primary-foreground">
         <Container.Root className="">
           <Container.Content className="flex h-14 items-center gap-4">
-            <div className="relative h-8 w-8">
-              <Image
-                src={superindo}
-                fill
-                style={{
-                  objectFit: "contain",
-                  filter: "brightness(0) invert(1)",
-                }}
-                alt="lele icon"
-              />
-            </div>
+            <Link href={"/"}>
+              <div className="relative h-8 w-8">
+                <Image
+                  src={superindo}
+                  fill
+                  style={{
+                    objectFit: "contain",
+                    filter: "brightness(0) invert(1)",
+                  }}
+                  alt="lele icon"
+                />
+              </div>
+            </Link>
             <div className="relative flex-grow">
               <AiOutlineSearch
                 size={25}
