@@ -79,14 +79,14 @@ export default function DialogCreateProductCategory() {
               className="flex h-8 w-full gap-1 sm:w-auto"
             >
               <PlusCircledIcon className="mr-2 h-4 w-4" />
-              Produk baru
+              Varian baru
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Form menambahkan kategori</DialogTitle>
+              <DialogTitle>Form menambahkan varian</DialogTitle>
               <DialogDescription>
-                Aksi ini akan menambahkan kategori kedalam sistem, setelah data
+                Aksi ini akan menambahkan varian kedalam sistem, setelah data
                 disimpan data tidak akan dapat dihapus
               </DialogDescription>
             </DialogHeader>

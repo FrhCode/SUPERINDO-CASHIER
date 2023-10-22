@@ -125,7 +125,14 @@ export default function DialogUpdateProductVariant({
                 <FormItem>
                   <FormLabel>Qty</FormLabel>
                   <FormControl>
-                    <Input placeholder="100" {...field} />
+                    <Input
+                      placeholder="100"
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        form.setValue("qty", parseInt(e.currentTarget.value));
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,7 +146,14 @@ export default function DialogUpdateProductVariant({
                 <FormItem>
                   <FormLabel>Harga</FormLabel>
                   <FormControl>
-                    <Input placeholder="100000" {...field} />
+                    <Input
+                      placeholder="100000"
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        form.setValue("price", parseInt(e.currentTarget.value));
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

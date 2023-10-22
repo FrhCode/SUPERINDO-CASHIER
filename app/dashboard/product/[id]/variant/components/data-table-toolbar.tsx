@@ -4,15 +4,21 @@ import PaginateProductCategoryRequest from "@/type/paginate-product-category";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import DialogCreateProductCategory from "../../../../category/components/dialog-create-product-category";
+import DialogCreateProductVariant from "./dialog-create-product-variant";
 
-export default function DataTableToolbar() {
+type Props = {
+  id: string;
+};
+
+export default function DataTableToolbar({ id }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
   const [text, setText] = useState(() => searchParams.get("query") ?? "");
   const [value] = useDebounce(text, 100);
+
+  console.log(pathname);
 
   const query: PaginateProductCategoryRequest = {
     page: searchParams.get("page") ?? "0",
@@ -45,8 +51,7 @@ export default function DataTableToolbar() {
         }}
         value={text}
       />
-
-      <DialogCreateProductCategory />
+      <DialogCreateProductVariant productId={id} />
     </div>
   );
 }

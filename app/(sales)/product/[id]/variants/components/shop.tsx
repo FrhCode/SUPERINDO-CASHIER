@@ -3,8 +3,12 @@ import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container/Container";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/components/ui/use-toast";
+import AddToCart from "@/service/cart/add-to-cart";
 import ProductVariant from "@/type/product-variant";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -12,7 +16,10 @@ type Props = {
 };
 
 export default function Shop({ productVariants }: Props) {
-  const [pcs, setPcs] = useState(1);
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const [pcs, setPcs] = useState<number>(1);
   const [variant, setVariant] = useState(productVariants[0]);
 
   useEffect(() => {
@@ -20,6 +27,28 @@ export default function Shop({ productVariants }: Props) {
       setPcs(variant.qty);
     }
   }, [pcs, variant]);
+
+  const handleAddToCart = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    try {
+      await AddToCart({
+        data: { productVariantId: variant.id.toString(), qty: pcs.toString() },
+        token: session!.jwtToken,
+      });
+      toast({
+        title: "Berhasil menambahkan ke keranjang",
+        description: "Silakan Lakukan Checkout",
+      });
+    } catch (error) {
+      toast({
+        title: "Barang sudah ada dikeranjang",
+        description: "Silakan Lakukan Checkout",
+      });
+    } finally {
+      router.refresh();
+    }
+  };
 
   return (
     <Container.Root className="mt-5">
@@ -104,7 +133,9 @@ export default function Shop({ productVariants }: Props) {
             })}
           </div>
         </Tabs>
-        <Button className="mt-5 w-full">Keranjang</Button>
+        <Button className="mt-5 w-full" onClick={handleAddToCart}>
+          Keranjang
+        </Button>
       </Container.Content>
     </Container.Root>
   );

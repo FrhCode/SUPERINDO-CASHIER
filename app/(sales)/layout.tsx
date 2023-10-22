@@ -6,6 +6,8 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { Input } from "@/components/ui/input";
 import superindo from "@/public/super-indo-logo-black-and-white.png";
 import Link from "next/link";
+import { getCart } from "@/service/cart/get-cart";
+import CheckoutComponent from "./components/checkout-component";
 
 export default async function RootLayout({
   children,
@@ -17,6 +19,9 @@ export default async function RootLayout({
   if (!session) {
     throw new Error();
   }
+
+  const { content: carts } = await getCart({ token: session.jwtToken });
+
   return (
     <>
       <div className="bg-primary text-primary-foreground">
@@ -43,7 +48,7 @@ export default async function RootLayout({
               />
               <Input className="h-8 pl-9" placeholder="Cari barang disini" />
             </div>
-            <AiOutlineShoppingCart size={30} />
+            <CheckoutComponent carts={carts} />
           </Container.Content>
         </Container.Root>
       </div>

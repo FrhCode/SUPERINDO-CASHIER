@@ -43,7 +43,7 @@ export default async function page({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar />
+      <DataTableToolbar id={id} />
       <Table>
         <TableHeader>
           <TableRow>

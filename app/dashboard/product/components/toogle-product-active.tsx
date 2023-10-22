@@ -23,6 +23,7 @@ export default function ToogleProductActive({ product }: Props) {
       active: product.active,
       name: product.name,
       id: `${product.id}`,
+      thumbnail: product.thumbnail,
     },
   });
 

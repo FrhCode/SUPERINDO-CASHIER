@@ -1,14 +1,11 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,
@@ -18,80 +15,80 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/components/ui/use-toast";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import CreateProductSchema from "./schema/create-product-schema";
-import createProduct from "@/service/product/create-product";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { paginateProductCategory } from "@/service/product_category/paginate-product-category";
-import ProductCategory from "@/type/product-category";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import uploadImage from "@/service/upload/upload-image";
+import CreateProductVariantSchema from "./schema/create-product-variant-schema";
+import createProductVariant from "@/service/product_variant/create-product-variant";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
 
-type Props = {
-  productCategory: ProductCategory[];
-};
+interface Props {
+  productId: string;
+}
 
-export default function DialogCreateProduct({ productCategory }: Props) {
+export default function DialogCreateProductVariant({ productId }: Props) {
   const { data: session } = useSession();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const router = useRouter();
-  const form = useForm<z.infer<typeof CreateProductSchema>>({
-    resolver: zodResolver(CreateProductSchema),
+  const form = useForm<z.infer<typeof CreateProductVariantSchema>>({
+    resolver: zodResolver(CreateProductVariantSchema),
     defaultValues: {
-      active: false,
+      code: "",
       name: "",
-      plu: "",
-      productCategoryId: undefined,
+      qty: 0,
+      price: 0,
       thumbnail: "",
+      active: false,
     },
   });
 
-  const selectRef = useRef<HTMLButtonElement>(null);
+  async function onSubmit(data: z.infer<typeof CreateProductVariantSchema>) {
+    // await updateProductVariant({
+    //   data,
+    //   token: session!.jwtToken,
+    // });
 
-  const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    form.reset();
-  }, [form, isModalOpen]);
-
-  async function onSubmit(data: z.infer<typeof CreateProductSchema>) {
-    await createProduct({ data, token: session!.jwtToken });
-
-    toast({
-      title: "Data Berhasil Ditambahkan",
-      description: "Data telah berhasil ditambahkan ke dalam aplikasi.",
+    await createProductVariant({
+      data,
+      token: session!.jwtToken,
+      id: productId,
     });
 
     router.refresh();
 
-    setIsModalOpen(false);
+    toast({
+      title: "Data Berhasil Di-update",
+      description: "Data telah berhasil di-update ke dalam aplikasi.",
+    });
+
+    setOpen(false);
   }
+
+  useEffect(() => {
+    form.reset({
+      code: "",
+      name: "",
+      qty: 0,
+      price: 0,
+      thumbnail: "",
+      active: false,
+    });
+  }, [form, open]);
 
   return (
     <Form {...form}>
-      <form
-        ref={formRef}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full justify-end space-y-6"
-      >
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button
               variant="outline"
@@ -99,23 +96,23 @@ export default function DialogCreateProduct({ productCategory }: Props) {
               className="flex h-8 w-full gap-1 sm:w-auto"
             >
               <PlusCircledIcon className="mr-2 h-4 w-4" />
-              Produk baru
+              Varian baru
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Form menambahkan produk</DialogTitle>
+              <DialogTitle>Form mengupdate variant</DialogTitle>
               <DialogDescription>
-                Aksi ini akan menambahkan produk kedalam sistem, setelah data
-                disimpan data tidak akan dapat dihapus
+                Aksi ini akan mengubah mengubah variant, Mohon perhatikan data
+                yang Di-inputkan.
               </DialogDescription>
             </DialogHeader>
             <FormField
               control={form.control}
-              name="plu"
+              name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>PLU</FormLabel>
+                  <FormLabel>Code</FormLabel>
                   <FormControl>
                     <Input placeholder="PDCT0000006" {...field} />
                   </FormControl>
@@ -130,7 +127,7 @@ export default function DialogCreateProduct({ productCategory }: Props) {
                 <FormItem>
                   <FormLabel>Nama</FormLabel>
                   <FormControl>
-                    <Input placeholder="makanan hangat" {...field} />
+                    <Input placeholder="Indomie ayam geprek" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,40 +136,41 @@ export default function DialogCreateProduct({ productCategory }: Props) {
 
             <FormField
               control={form.control}
-              name="productCategoryId"
+              name="qty"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Kategori</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger
-                        ref={selectRef}
-                        className="text-left [&>span:first-child]:line-clamp-1"
-                      >
-                        <SelectValue placeholder="Pilih kategori" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <ScrollArea className="h-[200px] rounded-md">
-                        {productCategory.map(({ id: value, name: label }) => {
-                          return (
-                            <SelectItem
-                              key={`${value}`}
-                              value={`${value}`}
-                              style={{
-                                width: selectRef.current?.offsetWidth,
-                              }}
-                            >
-                              {label}
-                            </SelectItem>
-                          );
-                        })}
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Qty</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="100"
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        form.setValue("qty", parseInt(e.currentTarget.value));
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Harga</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="100000"
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        form.setValue("price", parseInt(e.currentTarget.value));
+                      }}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -209,9 +207,9 @@ export default function DialogCreateProduct({ productCategory }: Props) {
                       }}
                     />
                   </FormControl>
-                  {/* <FormDescription>
+                  <FormDescription>
                     Kosongkan jika tidak ingin dirubah.
-                  </FormDescription> */}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -225,8 +223,8 @@ export default function DialogCreateProduct({ productCategory }: Props) {
                   <div className="space-y-0.5">
                     <FormLabel className="text-base">Active</FormLabel>
                     <FormDescription>
-                      Jika produk tidak aktif, maka sistem tidak akan menampikan
-                      item ini kepada customer.
+                      Jika kategori tidak aktif, maka sistem tidak akan
+                      menampikan item ini kepada customer.
                     </FormDescription>
                   </div>
                   <FormControl>

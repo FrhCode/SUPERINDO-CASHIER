@@ -1,20 +1,19 @@
-import UpdateProductSchema from "@/app/dashboard/product/components/schema/update-product-schema";
+import UpdateCartSchema from "@/app/(sales)/product/[id]/variants/components/schema/update-cart-schema";
 import { z } from "zod";
 
 interface Props {
-  data: z.infer<typeof UpdateProductSchema>;
+  data: z.infer<typeof UpdateCartSchema>;
   token: string;
 }
-export default async function updateProduct({ token, data }: Props) {
-  const url = process.env.NEXT_PUBLIC_API_URL + `/api/v1/products/${data.id}`;
+export default async function updateCart({ token, data }: Props) {
+  const url = process.env.NEXT_PUBLIC_API_URL + `/api/v1/carts/${data.id}`;
 
   const res: Response = await fetch(url, {
     method: "PUT",
-    body: JSON.stringify({
-      active: data.active,
-      name: data.name,
-      thumbnail: data.thumbnail,
-    } as Omit<z.infer<typeof UpdateProductSchema>, "id">),
+    body: JSON.stringify({ qty: data.qty } as Omit<
+      z.infer<typeof UpdateCartSchema>,
+      "id"
+    >),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

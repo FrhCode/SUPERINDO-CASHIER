@@ -28,6 +28,7 @@ import { Switch } from "@/components/ui/switch";
 import Product from "@/type/product";
 import UpdateProductSchema from "./schema/update-product-schema";
 import updateProduct from "@/service/product/update-product";
+import uploadImage from "@/service/upload/upload-image";
 
 interface Props {
   product: Product;
@@ -49,6 +50,7 @@ export default function DialogUpdateProduct({
       active: product.active,
       id: `${product.id}`,
       name: product.name,
+      thumbnail: product.thumbnail,
     },
   });
 
@@ -73,8 +75,9 @@ export default function DialogUpdateProduct({
       active: product.active,
       name: product.name,
       id: `${product.id}`,
+      thumbnail: product.thumbnail,
     });
-  }, [form, product.active, product.id, product.name]);
+  }, [form, product.active, product.id, product.name, product.thumbnail]);
 
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
@@ -102,6 +105,44 @@ export default function DialogUpdateProduct({
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="thumbnail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Thumbnail</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="picture"
+                      type="file"
+                      onChange={async (e) => {
+                        const file = e.currentTarget.files![0];
+
+                        const isImage = file.type.startsWith("image/");
+
+                        if (!isImage) {
+                          form.setError("thumbnail", {
+                            message: "harus gambar",
+                          });
+                          return;
+                        }
+
+                        const { message: uploadPath } = await uploadImage({
+                          file,
+                          token: session!.jwtToken,
+                        });
+
+                        form.setValue("thumbnail", uploadPath);
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Kosongkan jika tidak ingin dirubah.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="active"

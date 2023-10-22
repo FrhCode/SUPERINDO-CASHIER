@@ -1,20 +1,18 @@
-import UpdateProductSchema from "@/app/dashboard/product/components/schema/update-product-schema";
+import CreateProductVariantSchema from "@/app/dashboard/product/[id]/variant/components/schema/create-product-variant-schema";
 import { z } from "zod";
 
 interface Props {
-  data: z.infer<typeof UpdateProductSchema>;
+  data: z.infer<typeof CreateProductVariantSchema>;
   token: string;
+  id: string;
 }
-export default async function updateProduct({ token, data }: Props) {
-  const url = process.env.NEXT_PUBLIC_API_URL + `/api/v1/products/${data.id}`;
+export default async function createProductVariant({ token, data, id }: Props) {
+  const url =
+    process.env.NEXT_PUBLIC_API_URL + `/api/v1/products/${id}/variants`;
 
   const res: Response = await fetch(url, {
-    method: "PUT",
-    body: JSON.stringify({
-      active: data.active,
-      name: data.name,
-      thumbnail: data.thumbnail,
-    } as Omit<z.infer<typeof UpdateProductSchema>, "id">),
+    method: "POST",
+    body: JSON.stringify(data),
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
