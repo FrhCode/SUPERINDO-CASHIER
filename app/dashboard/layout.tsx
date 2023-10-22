@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/sheet";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Sidebar from "./components/sidebar";
+import NullSessionException from "@/exception/NullSessionException";
+import LogOut from "@/components/ui/log-out";
 
 export default async function DashBoardLayout({
   children,
@@ -32,7 +34,7 @@ export default async function DashBoardLayout({
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    throw new Error();
+    throw new NullSessionException();
   }
 
   const links = [
@@ -82,7 +84,9 @@ export default async function DashBoardLayout({
 
           <div className="col-span-2">
             <button>
-              <AiOutlineLogout strokeWidth="30" />
+              <LogOut>
+                <AiOutlineLogout strokeWidth="30" />
+              </LogOut>
             </button>
           </div>
         </div>

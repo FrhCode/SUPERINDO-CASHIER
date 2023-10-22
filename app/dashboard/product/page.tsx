@@ -15,7 +15,7 @@ import { paginateProduct } from "@/service/product/paginate-product";
 import ToogleProductActive from "./components/toogle-product-active";
 import DataTableRowAction from "./components/data-table-row-action";
 import DataTablePagination from "./components/data-table-pagination";
-import { paginateProductCategory } from "@/service/product_category/paginate-product-category";
+import NullSessionException from "@/exception/NullSessionException";
 
 type Props = {
   searchParams: Partial<PaginateProduct>;
@@ -27,7 +27,7 @@ export default async function Page({
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    throw new Error();
+    throw new NullSessionException();
   }
 
   const data = await paginateProduct({
@@ -37,15 +37,6 @@ export default async function Page({
     size: size ?? "10",
     sortBy: sortBy ?? "",
     sortDirection: sortDirection ?? "DESC",
-  });
-
-  const { content: productCategory } = await paginateProductCategory({
-    page: "0",
-    query: "",
-    size: "100",
-    token: session.jwtToken,
-    sortBy: "",
-    sortDirection: "ASC",
   });
 
   return (

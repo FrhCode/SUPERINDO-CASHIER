@@ -28,7 +28,7 @@ export default function QtyInput({ cart }: Props) {
   return (
     <Input
       className="h-7 w-14"
-      value={cart.qty}
+      value={qty}
       type="number"
       onChange={(e) => {
         const quantity = e.currentTarget.value;

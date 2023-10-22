@@ -1,4 +1,5 @@
 import UpdateCartSchema from "@/app/(sales)/product/[id]/variants/components/schema/update-cart-schema";
+import InvalidSessionException from "@/exception/InvalidSessionException";
 import { z } from "zod";
 
 interface Props {
@@ -21,7 +22,7 @@ export default async function updateCart({ token, data }: Props) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new InvalidSessionException();
   }
 
   const contentType = res.headers.get("content-type");

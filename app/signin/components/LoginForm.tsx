@@ -33,7 +33,7 @@ export default function LoginForm() {
     signIn("credentials", {
       email: values.email,
       password: values.password,
-      callbackUrl: callbackUrl || "/cashier",
+      callbackUrl: callbackUrl || "/",
     });
   }
 

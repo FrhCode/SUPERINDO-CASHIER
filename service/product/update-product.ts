@@ -1,4 +1,5 @@
 import UpdateProductSchema from "@/app/dashboard/product/components/schema/update-product-schema";
+import InvalidSessionException from "@/exception/InvalidSessionException";
 import { z } from "zod";
 
 interface Props {
@@ -22,7 +23,7 @@ export default async function updateProduct({ token, data }: Props) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new InvalidSessionException();
   }
 
   const contentType = res.headers.get("content-type");

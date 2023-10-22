@@ -16,6 +16,7 @@ import PaginateProductCategoryRequest from "@/type/paginate-product-category";
 import DataTableToolbar from "./components/data-table-toolbar";
 import ToogleProductCategoryActive from "./components/toogle-product-category-active";
 import DataTableRowAction from "./components/data-table-row-action";
+import NullSessionException from "@/exception/NullSessionException";
 
 type Props = {
   searchParams: Partial<PaginateProductCategoryRequest>;
@@ -27,7 +28,7 @@ export default async function page({
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    throw new Error();
+    throw new NullSessionException();
   }
 
   const data = await paginateProductCategory({

@@ -28,9 +28,7 @@ export default function Shop({ productVariants }: Props) {
     }
   }, [pcs, variant]);
 
-  const handleAddToCart = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleAddToCart = async () => {
     try {
       await AddToCart({
         data: { productVariantId: variant.id.toString(), qty: pcs.toString() },
@@ -53,12 +51,16 @@ export default function Shop({ productVariants }: Props) {
   return (
     <Container.Root className="mt-5">
       <Container.Content className="">
-        <Tabs defaultValue={`${productVariants[0].id}`} className="w-[400px]">
+        <Tabs
+          defaultValue={`${productVariants[0].id}`}
+          className="gap-5 md:flex"
+        >
           {productVariants.map((productVariant) => {
             return (
               <TabsContent
                 key={productVariant.id}
                 value={`${productVariant.id}`}
+                className="w-full md:max-w-[400px]"
               >
                 <div className="overflow-hidden rounded-xl border-2 p-5">
                   <div className="relative aspect-[4/4] w-full">
@@ -80,62 +82,76 @@ export default function Shop({ productVariants }: Props) {
             );
           })}
 
-          <p className="mt-4 text-slate-800">Pilih varian: </p>
+          <div>
+            <p className="mt-4 text-slate-800">Pilih varian: </p>
 
-          <div className="mt-2 ">
-            <TabsList className="flex flex-wrap justify-start gap-3 bg-white p-0">
+            <div className="mt-2">
+              <TabsList className="flex h-auto flex-wrap justify-start gap-3 bg-white p-0">
+                {productVariants.map((productVariant) => {
+                  return (
+                    <TabsTrigger
+                      value={`${productVariant.id}`}
+                      key={productVariant.id}
+                      className="p-0 data-[state=active]:bg-none data-[state=active]:text-primary"
+                      onClick={() => {
+                        setVariant(productVariant);
+                      }}
+                      disabled={productVariant.qty === 0}
+                    >
+                      {productVariant.name}
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
+            </div>
+            <div className="mt-2">
               {productVariants.map((productVariant) => {
                 return (
-                  <TabsTrigger
-                    value={`${productVariant.id}`}
+                  <TabsContent
                     key={productVariant.id}
-                    className="p-0 data-[state=active]:bg-none data-[state=active]:text-primary"
-                    onClick={() => {
-                      setVariant(productVariant);
-                    }}
-                    disabled={productVariant.qty === 0}
+                    value={`${productVariant.id}`}
+                    className="text-slate-500"
                   >
-                    {productVariant.name}
-                  </TabsTrigger>
+                    {productVariant.qty.toLocaleString()} in stock
+                  </TabsContent>
                 );
               })}
-            </TabsList>
-          </div>
-
-          <div className="mt-7">
-            <div className="flex items-end gap-2">
-              <Input
-                className="w-20"
-                type="number"
-                value={pcs}
-                onChange={(e) => {
-                  const newPcs = parseInt(e.currentTarget.value);
-                  if (newPcs > 0 && newPcs <= variant.qty) {
-                    setPcs(newPcs);
-                  }
-                }}
-              />
-              <p>pcs</p>
             </div>
-          </div>
 
-          <div className="mt-7">
-            {productVariants.map((productVariant) => {
-              return (
-                <TabsContent
-                  key={productVariant.id}
-                  value={`${productVariant.id}`}
-                  className="text-primary"
-                >
-                  {productVariant.qty.toLocaleString()} in stock
-                </TabsContent>
-              );
-            })}
+            <div className="mt-2 flex items-end gap-3">
+              {productVariants.map((productVariant) => {
+                return (
+                  <TabsContent
+                    key={productVariant.id}
+                    value={`${productVariant.id}`}
+                    className="text-slate-500"
+                  >
+                    <p className="mt-2 font-semibold text-primary">
+                      IDR. {productVariant.price.toLocaleString()}
+                    </p>
+                  </TabsContent>
+                );
+              })}
+              <div className="flex items-end gap-2">
+                <Input
+                  className="w-20"
+                  type="number"
+                  value={pcs}
+                  onChange={(e) => {
+                    const newPcs = parseInt(e.currentTarget.value);
+                    if (newPcs > 0 && newPcs <= variant.qty) {
+                      setPcs(newPcs);
+                    }
+                  }}
+                />
+                <p>pcs</p>
+              </div>
+            </div>
+            <Button className="mt-5 w-full" onClick={handleAddToCart}>
+              Keranjang
+            </Button>
           </div>
         </Tabs>
-        <Button className="mt-5 w-full" onClick={handleAddToCart}>
-          Keranjang
-        </Button>
       </Container.Content>
     </Container.Root>
   );

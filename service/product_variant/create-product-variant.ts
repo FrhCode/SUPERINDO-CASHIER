@@ -1,4 +1,5 @@
 import CreateProductVariantSchema from "@/app/dashboard/product/[id]/variant/components/schema/create-product-variant-schema";
+import InvalidSessionException from "@/exception/InvalidSessionException";
 import { z } from "zod";
 
 interface Props {
@@ -20,7 +21,7 @@ export default async function createProductVariant({ token, data, id }: Props) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new InvalidSessionException();
   }
 
   const contentType = res.headers.get("content-type");

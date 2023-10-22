@@ -1,4 +1,5 @@
 import CreateProductCategorySchema from "@/app/dashboard/category/components/schema/create-product-category-schema";
+import InvalidSessionException from "@/exception/InvalidSessionException";
 import { z } from "zod";
 
 interface Props {
@@ -18,7 +19,7 @@ export default async function createProductCategory({ token, data }: Props) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new InvalidSessionException();
   }
 
   const contentType = res.headers.get("content-type");

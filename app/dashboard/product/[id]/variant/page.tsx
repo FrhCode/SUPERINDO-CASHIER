@@ -15,6 +15,7 @@ import { paginateProductVariant } from "@/service/product_variant/paginate-produ
 import DataTablePagination from "./components/data-table-pagination";
 import DataTableRowAction from "./components/data-table-row-action";
 import ToogleProductVariantActive from "./components/toogle-product-variant-active";
+import NullSessionException from "@/exception/NullSessionException";
 
 type Props = {
   params: { id: string };
@@ -28,7 +29,7 @@ export default async function page({
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    throw new Error();
+    throw new NullSessionException();
   }
 
   const data = await paginateProductVariant({

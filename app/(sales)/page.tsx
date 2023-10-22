@@ -25,12 +25,12 @@ export default async function Home() {
     <>
       <Container.Root className="mt-5">
         <Container.Content className="flex items-center gap-4">
-          <div className="relative h-44 w-full overflow-hidden rounded-xl border-2">
+          <div className="relative h-44 w-full overflow-hidden rounded-xl border-2 sm:h-56 md:h-64">
             <Image
               src={banner}
               fill
               style={{
-                objectFit: "fill",
+                objectFit: "cover",
               }}
               alt="lele icon"
             />
@@ -39,7 +39,7 @@ export default async function Home() {
       </Container.Root>
 
       <Container.Root className="mt-5">
-        <Container.Content className="grid grid-cols-2 gap-3">
+        <Container.Content className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {products.map((product) => {
             return (
               <Link key={product.id} href={`/product/${product.id}/variants`}>
@@ -50,7 +50,7 @@ export default async function Home() {
                     }
                     fill
                     style={{
-                      objectFit: "fill",
+                      objectFit: "cover",
                     }}
                     alt="lele icon"
                   />
