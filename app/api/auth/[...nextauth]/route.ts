@@ -24,11 +24,9 @@ export const authOptions: NextAuthOptions = {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
         if (res.status == 401) {
-          console.log(res.statusText);
-
           return null;
         }
         const user = await res.json();
@@ -45,8 +43,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ token, session }) {
-      // console.log({ session, token });
-
       session.userDetail = token.user;
       session.jwtToken = token.jwtToken;
       session.user = {
@@ -54,11 +50,6 @@ export const authOptions: NextAuthOptions = {
         email: token.user.email,
         image: token.user.profileImage,
       };
-      // session.expires = new Date()
-      //   .setMinutes(new Date().getMinutes() + 3)
-      //   .toString();
-
-      // session.expires = session.te;
 
       return session;
     },

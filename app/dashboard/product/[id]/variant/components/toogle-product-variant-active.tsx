@@ -1,6 +1,6 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,6 +46,25 @@ export default function ToogleProductVariantActive({ productVariant }: Props) {
       description: "Data telah berhasil di-update ke dalam aplikasi.",
     });
   }
+
+  useEffect(() => {
+    form.reset({
+      active: productVariant.active,
+      name: productVariant.name,
+      id: `${productVariant.id}`,
+      price: productVariant.price,
+      qty: productVariant.qty,
+      thumbnail: productVariant.thumbnail,
+    });
+  }, [
+    form,
+    productVariant.active,
+    productVariant.id,
+    productVariant.name,
+    productVariant.price,
+    productVariant.qty,
+    productVariant.thumbnail,
+  ]);
 
   return (
     <Form {...form}>

@@ -1,7 +1,7 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
 import ProductCategory from "@/type/product-category";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,6 +47,14 @@ export default function ToogleProductCategoryActive({
 
     // form.reset();
   }
+
+  useEffect(() => {
+    form.reset({
+      active: productCategory.active,
+      name: productCategory.name,
+      id: `${productCategory.id}`,
+    });
+  }, [form, productCategory.active, productCategory.id, productCategory.name]);
 
   return (
     <Form {...form}>

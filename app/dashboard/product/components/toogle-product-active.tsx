@@ -1,6 +1,6 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,6 +46,15 @@ export default function ToogleProductActive({ product }: Props) {
 
     // form.reset();
   }
+
+  useEffect(() => {
+    form.reset({
+      active: product.active,
+      name: product.name,
+      id: `${product.id}`,
+      thumbnail: product.thumbnail,
+    });
+  }, [form, product.active, product.id, product.name, product.thumbnail]);
 
   return (
     <Form {...form}>

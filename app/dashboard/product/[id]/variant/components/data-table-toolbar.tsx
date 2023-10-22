@@ -18,8 +18,6 @@ export default function DataTableToolbar({ id }: Props) {
   const [text, setText] = useState(() => searchParams.get("query") ?? "");
   const [value] = useDebounce(text, 100);
 
-  console.log(pathname);
-
   const query: PaginateProductCategoryRequest = {
     page: searchParams.get("page") ?? "0",
     size: searchParams.get("size") ?? "10",
