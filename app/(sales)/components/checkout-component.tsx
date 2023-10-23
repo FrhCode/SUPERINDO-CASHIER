@@ -18,6 +18,7 @@ import QtyInput from "../product/[id]/variants/components/qty-input";
 import { checkout } from "@/service/checkout/checkout";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 type Props = { carts: Cart[] };
 
@@ -81,20 +82,28 @@ export default function CheckoutComponent({ carts }: Props) {
                 type="submit"
                 className="flex w-full justify-between"
                 onClick={async () => {
-                  const { message } = await checkout({
-                    token: session!.jwtToken,
-                  });
-                  router.refresh();
-                  const link = document.createElement("a");
-                  link.href = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/checkout/${message}/download`;
-                  link.target = "_blank"; // Optional: Opens the link in a new tab/window
-                  document.body.appendChild(link);
+                  try {
+                    const { message } = await checkout({
+                      token: session!.jwtToken,
+                    });
+                    router.refresh();
+                    const link = document.createElement("a");
+                    link.href = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/checkout/${message}/download`;
+                    link.target = "_blank"; // Optional: Opens the link in a new tab/window
+                    document.body.appendChild(link);
 
-                  // Trigger a click event
-                  link.click();
+                    // Trigger a click event
+                    link.click();
 
-                  // Clean up: remove the link from the document
-                  document.body.removeChild(link);
+                    // Clean up: remove the link from the document
+                    document.body.removeChild(link);
+                  } catch (error) {
+                    toast({
+                      title: "Transaksi gagal dilakukan",
+                      description:
+                        "Silakan perhatikan quantity dari variant yang dipilih",
+                    });
+                  }
                 }}
               >
                 <p>Checkout</p>
