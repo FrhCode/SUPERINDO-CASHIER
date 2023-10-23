@@ -9,7 +9,7 @@ import ProductVariant from "@/type/product-variant";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   productVariants: ProductVariant[];
@@ -133,9 +133,9 @@ export default function Shop({ productVariants }: Props) {
                 );
               })}
               <div className="flex items-end gap-2">
-                <Input
-                  className="w-20"
-                  type="text"
+                <input
+                  type="number"
+                  className="h-10 w-20 rounded-md border"
                   value={pcs}
                   onChange={(e) => {
                     setPcs(e.currentTarget.value);
