@@ -22,11 +22,11 @@ export default function Shop({ productVariants }: Props) {
   const [pcs, setPcs] = useState<number>(1);
   const [variant, setVariant] = useState(productVariants[0]);
 
-  useEffect(() => {
-    if (pcs > variant.qty) {
-      setPcs(variant.qty);
-    }
-  }, [pcs, variant]);
+  // useEffect(() => {
+  //   if (pcs > variant.qty) {
+  //     setPcs(variant.qty);
+  //   }
+  // }, [pcs, variant]);
 
   const handleAddToCart = async () => {
     try {
