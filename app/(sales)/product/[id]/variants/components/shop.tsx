@@ -9,7 +9,7 @@ import ProductVariant from "@/type/product-variant";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 
 type Props = {
   productVariants: ProductVariant[];
@@ -19,9 +19,8 @@ export default function Shop({ productVariants }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [pcs, setPcs] = useState("1");
   const [variant, setVariant] = useState(productVariants[0]);
-
+  const pcsInputRef = useRef<HTMLInputElement>(null);
   // useEffect(() => {
   //   if (pcs > variant.qty) {
   //     setPcs(variant.qty);
@@ -31,7 +30,10 @@ export default function Shop({ productVariants }: Props) {
   const handleAddToCart = async () => {
     try {
       await AddToCart({
-        data: { productVariantId: variant.id.toString(), qty: pcs.toString() },
+        data: {
+          productVariantId: variant.id.toString(),
+          qty: pcsInputRef.current!.value,
+        },
         token: session!.jwtToken,
       });
       toast({
@@ -132,19 +134,21 @@ export default function Shop({ productVariants }: Props) {
                   </TabsContent>
                 );
               })}
+
               <div className="flex items-end gap-2">
                 <Input
-                  key={"pcs"}
                   className="w-20"
                   type="number"
-                  value={pcs}
-                  onChange={(e) => {
-                    setPcs(e.currentTarget.value);
-                  }}
+                  defaultValue={"1"}
+                  // value={pcs}
+                  // onChange={(e) => {
+                  //   setPcs(e.currentTarget.value);
+                  // }}
                 />
                 <p>pcs</p>
               </div>
             </div>
+
             <Button className="mt-5 w-full" onClick={handleAddToCart}>
               Keranjang
             </Button>
