@@ -138,10 +138,7 @@ export default function Shop({ productVariants }: Props) {
                   type="number"
                   value={pcs}
                   onChange={(e) => {
-                    const newPcs = parseInt(e.currentTarget.value);
-                    if (newPcs > 0 && newPcs <= variant.qty) {
-                      setPcs(newPcs);
-                    }
+                    setPcs(parseInt(e.currentTarget.value));
                   }}
                 />
                 <p>pcs</p>
