@@ -19,7 +19,7 @@ export default function Shop({ productVariants }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [pcs, setPcs] = useState<number>(1);
+  const [pcs, setPcs] = useState("1");
   const [variant, setVariant] = useState(productVariants[0]);
 
   // useEffect(() => {
@@ -138,7 +138,7 @@ export default function Shop({ productVariants }: Props) {
                   type="number"
                   value={pcs}
                   onChange={(e) => {
-                    setPcs(parseInt(e.currentTarget.value));
+                    setPcs(e.currentTarget.value);
                   }}
                 />
                 <p>pcs</p>
