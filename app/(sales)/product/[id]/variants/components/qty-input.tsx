@@ -27,7 +27,7 @@ export default function QtyInput({ cart }: Props) {
 
   return (
     <Input
-      className="h-7 w-14"
+      className="h-7 w-20"
       value={qty}
       type="number"
       onChange={(e) => {

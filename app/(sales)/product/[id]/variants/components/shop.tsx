@@ -19,21 +19,16 @@ export default function Shop({ productVariants }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [pcs, setPcs] = useState("1");
-  const [variant, setVariant] = useState(productVariants[0]);
+  // const [pcs, setPcs] = useState("1");
+  // const [variant, setVariant] = useState(productVariants[0]);
   const pcsInputRef = useRef<HTMLInputElement>(null);
-  const variantIdRef = useRef<number>(null);
-  // useEffect(() => {
-  //   if (pcs > variant.qty) {
-  //     setPcs(variant.qty);
-  //   }
-  // }, [pcs, variant]);
+  const variantIdRef = useRef<HTMLInputElement>(null);
 
   const handleAddToCart = async () => {
     try {
       await AddToCart({
         data: {
-          productVariantId: variantIdRef.current!.toString(),
+          productVariantId: variantIdRef.current!.value,
           qty: pcsInputRef.current!.value,
         },
         token: session!.jwtToken,
@@ -51,15 +46,9 @@ export default function Shop({ productVariants }: Props) {
       router.refresh();
     }
   };
-  const [tes, settes] = useState("1");
   return (
     <Container.Root className="mt-5">
       <Container.Content className="">
-        <input
-          type="text"
-          value={tes}
-          onChange={(e) => settes(e.currentTarget.value)}
-        />
         <Tabs
           defaultValue={`${productVariants[0].id}`}
           className="gap-5 md:flex"
@@ -96,16 +85,18 @@ export default function Shop({ productVariants }: Props) {
             <p className="mt-4 text-slate-800">Pilih varian: </p>
 
             <div className="mt-2">
+              <input
+                type="number"
+                ref={variantIdRef}
+                hidden
+                defaultValue={productVariants[0].id}
+              />
               <TabsList
                 className="flex h-auto flex-wrap justify-start gap-3 bg-white p-0"
                 onClick={(e) => {
-                  const button = e.target as HTMLButtonElement;
-                  const productVariantId = button.getAttribute("data-id")!;
-                  const variant = productVariants.find(
-                    (value) => value.id == parseInt(productVariantId),
-                  )!;
-
-                  // setVariant(variant);
+                  const element = e.target as HTMLButtonElement;
+                  const productVariantId = element.getAttribute("data-id")!;
+                  variantIdRef.current!.value = productVariantId;
                 }}
               >
                 {productVariants.map((productVariant) => {
@@ -114,7 +105,7 @@ export default function Shop({ productVariants }: Props) {
                       value={`${productVariant.id}`}
                       key={productVariant.id}
                       className="p-0 data-[state=active]:bg-none data-[state=active]:text-primary"
-                      disabled={productVariant.qty === 0}
+                      disabled={productVariant.qty <= 0}
                       data-id={productVariant.id}
                       // onClick={() => {
                       //   console.log("OK");
@@ -160,6 +151,7 @@ export default function Shop({ productVariants }: Props) {
                   className="w-20"
                   type="number"
                   defaultValue={"1"}
+                  ref={pcsInputRef}
                   // value={pcs}
                   // onChange={(e) => {
                   //   setPcs(e.currentTarget.value);
