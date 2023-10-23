@@ -135,7 +135,7 @@ export default function Shop({ productVariants }: Props) {
               <div className="flex items-end gap-2">
                 <Input
                   className="w-20"
-                  type="number"
+                  type="text"
                   value={pcs}
                   onChange={(e) => {
                     setPcs(e.currentTarget.value);
