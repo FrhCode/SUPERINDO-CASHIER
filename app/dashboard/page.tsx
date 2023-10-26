@@ -192,29 +192,31 @@ export default async function Page() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-8">
-                  {latestTransactions.map((trasaction) => {
-                    return (
-                      <div className="flex items-center" key={trasaction.id}>
-                        <Avatar className="h-9 w-9">
-                          <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                          <AvatarFallback>
-                            {generateInitials(trasaction.created_user)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="ml-4 space-y-1">
-                          <p className="text-sm font-medium leading-none">
-                            {trasaction.created_user}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            example@gmail.com
-                          </p>
+                  {latestTransactions
+                    .filter((_, index) => index < 5)
+                    .map((trasaction) => {
+                      return (
+                        <div className="flex items-center" key={trasaction.id}>
+                          <Avatar className="h-9 w-9">
+                            <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                            <AvatarFallback>
+                              {generateInitials(trasaction.created_user)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="ml-4 space-y-1">
+                            <p className="text-sm font-medium leading-none">
+                              {trasaction.created_user}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              example@gmail.com
+                            </p>
+                          </div>
+                          <div className="ml-auto font-medium">
+                            IDR {trasaction.totalAmount.toLocaleString()}
+                          </div>
                         </div>
-                        <div className="ml-auto font-medium">
-                          IDR {trasaction.totalAmount.toLocaleString()}
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               </CardContent>
             </Card>
